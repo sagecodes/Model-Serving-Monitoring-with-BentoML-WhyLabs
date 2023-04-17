@@ -13,6 +13,22 @@ There are two notable files in this example:
 - `train.py` - Trains and saves a versioned kNN model with scikit-learn, BentoML, and the iris dataset.
 - `service.py` - Creates a model prediction API endpoint with BentoML and writes whylogs data profiles to WhyLabs for ML monitoring.
 
+# Setup 
+
+- `python -m venv venv` or `python3 -m venv venv`
+- `source venv\bin\activate` 
+- `pip install --upgrade pip`
+- `pip install -r requirements.txt`
+
+
+
+
+
+
+
+
+
+
 ## 🛠️ How to implement ML monitoring for BentoML with whylogs and WhyLabs:
 
 After running the training script with `python train.py`, you'll see a message similar to "`Model saved: Model(tag="iris_knn:fhfsvifgrsrtjlg6")`". This is the versioned model saved to the BentoML local model store.
