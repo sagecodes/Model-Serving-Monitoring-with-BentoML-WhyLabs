@@ -13,27 +13,43 @@ There are two notable files in this example:
 - `train.py` - Trains and saves a versioned kNN model with scikit-learn, BentoML, and the iris dataset.
 - `service.py` - Creates a model prediction API endpoint with BentoML and writes whylogs data profiles to WhyLabs for ML monitoring.
 
-# Setup 
+## Prject Setup to Follow Along:
 
 - `python -m venv venv` or `python3 -m venv venv`
 - `source venv\bin\activate` 
 - `pip install --upgrade pip`
 - `pip install -r requirements.txt`
 
+## 1. Run training script:
+Run the training script to train and save a versioned kNN model with scikit-learn, BentoML, and the iris dataset.
+
+`python train.py`
+
+you'll see a message similar to "`Model saved: Model(tag="iris_knn:fhfsvifgrsrtjlg6")`". This is the versioned model saved to the BentoML local model store.
 
 
+## 2. Run BentoML API server:
+
+First update the `WHYLABS_API_KEY`, `WHYLABS_DEFAULT_ORG_ID`, and `WHYLABS_DEFAULT_DATASET_ID` environment variables in `service.py` with your WhyLabs API key, org-id, and project-id.
+
+> Note: A best practice for software deployment is to have these environment variables always set on the machine/environment level (such as per the CI/QA machine, a Kubernetes Pod, etc.) so it is possible to leave code untouched and persist it correctly according to the environment you execute it.
+
+Run the BentoML API server to serve the latest saved model and log the model predictions and data profiles to WhyLabs.
+`bentoml serve service:svc --reload`
+
+Use the swagger UI to test the API endpoint at `http://localhost:3000/`
 
 
+## 3. Log training data to WhyLabs as reference profile:
 
+To log the training data as a reference profile, run the following command:
 
+`python service.py`
 
-
+For more information about refernce profiles, check out the [whylogs documentation](https://whylogs.readthedocs.io/en/latest/examples/integrations/writers/Writing_Reference_Profiles_to_WhyLabs.html).
 
 ## 🛠️ How to implement ML monitoring for BentoML with whylogs and WhyLabs:
 
-After running the training script with `python train.py`, you'll see a message similar to "`Model saved: Model(tag="iris_knn:fhfsvifgrsrtjlg6")`". This is the versioned model saved to the BentoML local model store.
-
-> Note: It can be good practice to log the training data as a static reference profile to use as a baseline to detect data drift. For more information, check out the [whylogs documentation](https://whylogs.readthedocs.io/en/latest/examples/integrations/writers/Writing_Reference_Profiles_to_WhyLabs.html).
 
 Next, In `service.py`, we'll get ready to serve and monitor our latest saved model.
 
