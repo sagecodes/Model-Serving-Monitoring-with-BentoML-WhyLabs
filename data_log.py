@@ -13,7 +13,7 @@ data_iris = datasets.load_iris(as_frame=True)
 X, y = data_iris.data, data_iris.target
 
 
-# Log training data to WhyLabs as a reference profile
+# Set WhyLabs environment variables
 os.environ['WHYLABS_API_KEY'] = 'APIKEY'
 os.environ["WHYLABS_DEFAULT_ORG_ID"] = 'ORGID'
 os.environ["WHYLABS_DEFAULT_DATASET_ID"] = 'PROJECTID'

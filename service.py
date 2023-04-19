@@ -45,6 +45,8 @@ async def classify(features: np.ndarray):
     profile_results = why.log(data)
     profile_results.writer("whylabs").write()
 
+    # Note you can also log the data to a local file
+
     return category
 
 # Run with: bentoml serve service:svc --reload
