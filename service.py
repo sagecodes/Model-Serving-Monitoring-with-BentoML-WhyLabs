@@ -18,9 +18,6 @@ CLASS_NAMES = ["setosa", "versicolor", "virginica"]
 iris_clf_runner = bentoml.sklearn.get("iris_knn:latest").to_runner()
 svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
 
-
-# create a class to handle startup, shutdown, and prediction logic with Bentoml
-
 # Create a BentoML API endpoint for model predictions & logging
 @svc.api(
     input=NumpyNdarray.from_sample(np.array([4.9, 3.0, 1.4, 0.2], dtype=np.double)),
@@ -45,7 +42,6 @@ async def classify(features: np.ndarray):
     }
 
     # Log data + model outputs to WhyLabs.ai
-    # Log input data with whylogs & write to WhyLabs
     profile_results = why.log(data)
     profile_results.writer("whylabs").write()
 

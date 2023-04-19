@@ -1,6 +1,5 @@
 import bentoml
 from sklearn import datasets, neighbors
-import os
 
 # Load training data set
 iris = datasets.load_iris()

@@ -1,10 +1,12 @@
 # 🍱 Monitor ML Models Managed and Served with BentoML
 
-BentoML is an open-source framework that provides a model registry for versioning ML models and a model serving platform for deploying models to production with support for most major machine learning frameworks, such as scikit-learn, PyTorch, Tensorflow, Keras, XGBoost, and more.
+[BentoML](https://github.com/bentoml/BentoML) is an open-source framework that provides a model registry for versioning ML models and a model serving platform for deploying models to production with support for most major machine learning frameworks, such as scikit-learn, PyTorch, Tensorflow, Keras, XGBoost, and more.
 
-whylogs can easily integrate with BentoML machine learning projects to perform data and ML monitoring in real-time.
+[whylogs](https://github.com/whylabs/whylogs) is an open-source Python library that provides a data profiling tool for monitoring data and ML models in production. 
 
-## 📙 Example Overview:
+Both tools are flexible and can be used together to build and monitor AI applications!
+
+#### 🛠️ Workshop Example Overview:
 
 This example shows how to write whylogs data profiles to the [WhyLabs](https://whylabs.ai/) platform for monitoring a machine learning model with BentoML and scikit-learn.
 
@@ -13,7 +15,7 @@ There are two notable files in this example:
 - `train.py` - Trains and saves a versioned kNN model with scikit-learn, BentoML, and the iris dataset.
 - `service.py` - Creates a model prediction API endpoint with BentoML and writes whylogs data profiles to WhyLabs for ML monitoring.
 
-## Prject Setup to Follow Along:
+## Project Setup to Follow Along:
 
 - `python -m venv venv` or `python3 -m venv venv`
 - `source venv\bin\activate` 
@@ -39,6 +41,16 @@ Run the BentoML API server to serve the latest saved model and log the model pre
 
 Use the swagger UI to test the API endpoint at `http://localhost:3000/`
 
+Or use curl to test the API endpoint:
+
+```bash
+curl -i \
+    --header "Content-Type: application/json" \
+    --request POST \
+    --data '[[4.9, 3.0, 1.4, 0.2]]' \
+    http://localhost:3000/classify
+```
+
 
 ## 3. Log training data to WhyLabs as reference profile:
 
@@ -48,8 +60,34 @@ To log the training data as a reference profile, run the following command:
 
 For more information about refernce profiles, check out the [whylogs documentation](https://whylogs.readthedocs.io/en/latest/examples/integrations/writers/Writing_Reference_Profiles_to_WhyLabs.html).
 
-## 🛠️ How to implement ML monitoring for BentoML with whylogs and WhyLabs:
 
+## Deployment with BentoML
+
+To get your BentoML project ready for deployment, check out the [BentoML documentation](https://docs.bentoml.org/en/latest/).
+
+Add `whylogs[whylabs]` under python packages in the `bentofile.yaml` file to use whylogs and WhyLabs in a production BentoML project.
+
+```yaml
+python:
+  packages: # Additional pip packages required by the service
+    - whylogs[whylabs]
+```
+
+## 📚 More Resources
+
+- [Sign up for WhyLabs](https://whylabs.ai/)
+- [whylogs Documentation](https://whylogs.readthedocs.io/en/latest/)
+- [WhyLabs Documentation](https://docs.whylabs.ai/docs/)
+- [BentoML Documentation](https://docs.bentoml.org/en/latest/)
+- [WhyLabs Blog](https://whylabs.ai/blog)
+
+
+- To learn how to deploy your BentoML model to production, check out the [BentoML documentation](https://docs.bentoml.org/en/latest/).
+- To learn more about monitoring models in production, check out the [WhyLabs documentation](https://docs.whylabs.ai/docs/).
+
+---------
+
+## 🛠️ How to implement ML monitoring for BentoML with whylogs and WhyLabs:
 
 Next, In `service.py`, we'll get ready to serve and monitor our latest saved model.
 
@@ -115,13 +153,13 @@ class MyService:
 
         # create a dict of data & prediction results w/ feature names
         data = {
-            "sepal length": features[0],
-            "sepal width": features[1],
-            "petal length": features[2],
-            "petal width": features[3],
-            "class_output": category,
-            "proba_output": prob,
-        }
+        "sepal length (cm)": features[0],
+        "sepal width (cm)": features[1],
+        "petal length (cm)": features[2],
+        "petal width (cm)": features[3],
+        "class_output": category,
+        "proba_output": prob,
+    }
 
         # Log data + model outputs to WhyLabs.ai
         logger.log(data)
