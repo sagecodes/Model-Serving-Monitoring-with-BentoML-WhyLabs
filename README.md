@@ -18,7 +18,7 @@ There are two notable files in this example:
 ## Project Setup to Follow Along:
 
 - `python -m venv venv` or `python3 -m venv venv`
-- `source venv\bin\activate` 
+- `source venv/bin/activate` 
 - `pip install --upgrade pip`
 - `pip install -r requirements.txt`
 
@@ -159,7 +159,7 @@ class MyService:
         "petal width (cm)": features[3],
         "class_output": category,
         "proba_output": prob,
-    }
+        }
 
         # Log data + model outputs to WhyLabs.ai
         logger.log(data)
